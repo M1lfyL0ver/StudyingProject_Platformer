@@ -6,8 +6,8 @@ public class PlayerInputHandler : MonoBehaviour
 {
     [SerializeField] private InputActionReference _moveInput;
 
-    public Action<Vector2> LeftRightPressed;
-    public Action<Vector2> UpDownPressed;
+    public event Action<Vector2> LeftRightPressed;
+    public event Action<Vector2> UpDownPressed;
 
     private void OnEnable()
     {

@@ -14,23 +14,16 @@ public class PlayerAnimationSwitcher : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerMover.directionChanged += SetRunAnimation;
+        _playerMover.DirectionChanged += SetRunAnimation;
     }
 
     private void OnDisable()
     {
-        _playerMover.directionChanged -= SetRunAnimation;
+        _playerMover.DirectionChanged -= SetRunAnimation;
     }
 
     private void SetRunAnimation(Vector2 direction)
     {
-        if(direction.x != 0)
-        {
-            _animator.SetBool("IsRunning", true);
-        }
-        else
-        {
-            _animator.SetBool("IsRunning", false);
-        }
+        _animator.SetBool("IsRunning", direction.x != 0);
     }
 }

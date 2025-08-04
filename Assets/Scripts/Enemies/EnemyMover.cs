@@ -23,14 +23,16 @@ public class EnemyPatrol : MonoBehaviour
 
     private void PatrolBetweenWaypoints()
     {
-        if (_waypoints.Length == 0) return;
+        if (_waypoints.Length == 0)
+        {
+            return;
+        }
 
         Vector2 targetPosition = _waypoints[_currentWaypointIndex].position;
         Vector2 direction = (targetPosition - _rigidbody.position).normalized;
         Vector2 movement = direction * _moveSpeed * Time.fixedDeltaTime;
 
         _rigidbody.linearVelocity = new Vector2(direction.x * _moveSpeed, 0);
-
 
         if (IsCloseEnough(transform.position, targetPosition, _reachThreshold))
         {
