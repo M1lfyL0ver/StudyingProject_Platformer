@@ -10,7 +10,7 @@ public class CameraMover : MonoBehaviour
     private Vector3 _direction;
     private Vector3 _velocity = Vector3.zero;
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         _direction = _target.transform.position + _offset;
 

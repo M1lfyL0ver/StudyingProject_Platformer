@@ -1,29 +1,21 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator), typeof(PlayerMover))]
+[RequireComponent(typeof(Animator))]
 public class PlayerAnimationSwitcher : MonoBehaviour
 {
+    private const string IsRunning = nameof(IsRunning);
+
     private Animator _animator;
-    private PlayerMover _playerMover;
+    private int _isRunning;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        _playerMover = GetComponent<PlayerMover>();
+        _isRunning = Animator.StringToHash(nameof(IsRunning));
     }
 
-    private void OnEnable()
+    public void SetRunAnimation(Vector2 direction)
     {
-        _playerMover.DirectionChanged += SetRunAnimation;
-    }
-
-    private void OnDisable()
-    {
-        _playerMover.DirectionChanged -= SetRunAnimation;
-    }
-
-    private void SetRunAnimation(Vector2 direction)
-    {
-        _animator.SetBool("IsRunning", direction.x != 0);
+        _animator.SetBool(_isRunning, direction.x != 0);
     }
 }

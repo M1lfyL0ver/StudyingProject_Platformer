@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputHandler), typeof(Rigidbody2D), typeof(BoxCollider2D))]
-[RequireComponent(typeof(GroundDetector))]
+[RequireComponent(typeof(GroundDetector), typeof(PlayerAnimationSwitcher))]
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private float _jumpForce = 10f;
@@ -12,6 +12,7 @@ public class PlayerMover : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private SpriteRenderer _spriteRenderer;
     private GroundDetector _groundDetector;
+    private PlayerAnimationSwitcher _playerAnimationSwitcher;
     private Vector2 _moveVelocity = Vector2.zero;
 
     public event Action<Vector2> DirectionChanged;
@@ -22,6 +23,7 @@ public class PlayerMover : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _groundDetector = GetComponent<GroundDetector>();
+        _playerAnimationSwitcher = GetComponent<PlayerAnimationSwitcher>();
     }
 
     private void OnEnable()
@@ -51,16 +53,19 @@ public class PlayerMover : MonoBehaviour
 
     private void ChangeMovementSpeed(Vector2 direction)
     {
-        DirectionChanged?.Invoke(direction);
+        Quaternion right = Quaternion.Euler(0f, 0f, 0f);
+        Quaternion left = Quaternion.Euler(0f, 180f, 0f);
+
+        _playerAnimationSwitcher.SetRunAnimation(direction);
         _moveVelocity = direction.normalized * _playerMovementSpeed;
 
         if(direction.x < 0)
         {
-            _spriteRenderer.flipX = true;
+            transform.rotation = left;
         }
         if (direction.x > 0)
         {
-            _spriteRenderer.flipX = false;
+            transform.rotation = right;
         }
     }
 }
