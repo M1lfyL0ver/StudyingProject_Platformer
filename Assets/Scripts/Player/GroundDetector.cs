@@ -14,7 +14,8 @@ public class GroundDetector : MonoBehaviour
     {
         Vector2 boxSize = new Vector2(_boxCollider.size.x, 0.15f);
         Vector2 boxCenter = (Vector2)transform.position + Vector2.down * (_boxCollider.size.y / 2 + 0.1f);
+        float distance = 0.1f;
 
-        return Physics2D.BoxCast(boxCenter, boxSize, 0f, Vector2.down, 0.1f);
+        return Physics2D.BoxCast(boxCenter, boxSize, 0f, Vector2.down, distance);
     }
 }

@@ -1,20 +1,20 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class CoinCollector : MonoBehaviour
 {
-    private BoxCollider2D _collider;
+    private int _coinsCount;
 
-    private void Awake()
-    {
-        _collider = GetComponent<BoxCollider2D>();
-    }
+    public Action<int> CoinsCountChanged;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent<Coin>(out _))
         {
             Destroy(collision.gameObject);
+            _coinsCount++;
+            CoinsCountChanged?.Invoke(_coinsCount);
         }
     }
 }
