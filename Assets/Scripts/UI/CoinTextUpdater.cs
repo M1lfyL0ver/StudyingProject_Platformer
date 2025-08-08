@@ -2,9 +2,9 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
-public class MoneyCounter : MonoBehaviour
+public class CoinTextUpdater : MonoBehaviour
 {
-    [SerializeField] Player _player;
+    [SerializeField] private CoinCollector _collector;
 
     private TextMeshProUGUI _text;
 
@@ -15,12 +15,12 @@ public class MoneyCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.CoinsCountChanged += ChangeCoinsText;
+        _collector.CoinsCountChanged += ChangeCoinsText;
     }
 
     private void OnDisable()
     {
-        _player.CoinsCountChanged -= ChangeCoinsText;
+        _collector.CoinsCountChanged -= ChangeCoinsText;
     }
 
     private void ChangeCoinsText(int coinsCount)

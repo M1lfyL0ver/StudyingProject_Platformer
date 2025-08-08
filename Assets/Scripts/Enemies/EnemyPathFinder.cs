@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnemyPathFinder : MonoBehaviour
@@ -5,10 +6,27 @@ public class EnemyPathFinder : MonoBehaviour
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _reachThreshold = 0.1f;
 
-    private int _currentWaypointIndex = 0;
     private Vector2 _targetPosition;
+    private int _currentWaypointIndex = 0;
+
+    public Action<Vector2> WaypointReached;
+
+    private void Start()
+    {
+        WaypointReached?.Invoke(SetNextWaypointDirection());
+    }
+
+    private void FixedUpdate()
+    {
+        ChangeWaypointIfReached();
+    }
 
     public Vector2 GetNextWaypointDirection()
+    {
+        return SetNextWaypointDirection();
+    }
+
+    private Vector2 SetNextWaypointDirection()
     {
         if (_waypoints.Length == 0)
         {
@@ -22,11 +40,12 @@ public class EnemyPathFinder : MonoBehaviour
         return direction;
     }
 
-    public void ChangeWaypointIfReached()
+    private void ChangeWaypointIfReached()
     {
         if (IsCloseEnough(transform.position, _targetPosition, _reachThreshold))
         {
             _currentWaypointIndex = ++_currentWaypointIndex % _waypoints.Length;
+            WaypointReached?.Invoke(SetNextWaypointDirection());
         }
     }
 

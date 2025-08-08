@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraMover : MonoBehaviour
 {
-    [SerializeField] private PlayerMover _target;
+    [SerializeField] private Player _target;
     [SerializeField] private float _speed = 5f;
     [SerializeField] private Vector3 _offset = new Vector3(0f, 0f, -10f);
     [SerializeField] private float _smoothing = 0.1f;

@@ -189,7 +189,7 @@ Transform:
   m_GameObject: {fileID: 281942599}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.46, y: -2.52, z: -1}
+  m_LocalPosition: {x: -14.08, y: -2.23, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ca85d9c4e7cbaa42904daf60a76bf51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 1180294479}
+  _target: {fileID: 1180294481}
   _speed: 10
   _offset: {x: 0, y: 0, z: -10}
   _smoothing: 0.1
@@ -627,7 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f8c92628945cc44b26f2f6b8df76d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 1180294481}
+  _collector: {fileID: 1180294482}
 --- !u!1 &753365285
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +692,7 @@ Transform:
   m_GameObject: {fileID: 757435440}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.41, y: -2.65, z: -1}
+  m_LocalPosition: {x: -7.36, y: -2.25, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1004,10 +1004,13 @@ GameObject:
   - component: {fileID: 1180294476}
   - component: {fileID: 1180294475}
   - component: {fileID: 1180294474}
-  - component: {fileID: 1180294481}
-  - component: {fileID: 1180294479}
-  - component: {fileID: 1180294482}
   - component: {fileID: 1180294480}
+  - component: {fileID: 1180294486}
+  - component: {fileID: 1180294485}
+  - component: {fileID: 1180294484}
+  - component: {fileID: 1180294483}
+  - component: {fileID: 1180294482}
+  - component: {fileID: 1180294481}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1158,20 +1161,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1180294479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180294473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a269986b1e8a1ed4ab7bfc1c0721c102, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _jumpForce: 5
-  _playerMovementSpeed: 5
 --- !u!95 &1180294480
 Animator:
   serializedVersion: 7
@@ -1215,10 +1204,60 @@ MonoBehaviour:
   m_GameObject: {fileID: 1180294473}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a4e64589252e8408d37df3b0b642fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1180294483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180294473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26a963c6207d468418789fc85c943a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1180294484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180294473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04dd50415075cc748be61201462fc1d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1180294485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180294473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e234d556b8d28549b0c8549fbbd9452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _moveInput: {fileID: -1680190386980627800, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
+--- !u!114 &1180294486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180294473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a269986b1e8a1ed4ab7bfc1c0721c102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jumpForce: 5
+  _playerMovementSpeed: 5
 --- !u!1 &1190349429
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,6 +1392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _coinPrefab: {fileID: 6140894062141983923, guid: ca1e56e618783cb4ab3d733b6652287d, type: 3}
   _timeDelaySpawn: 2
+  _initialPoolSize: 10
 --- !u!212 &1194875753
 SpriteRenderer:
   m_ObjectHideFlags: 0
