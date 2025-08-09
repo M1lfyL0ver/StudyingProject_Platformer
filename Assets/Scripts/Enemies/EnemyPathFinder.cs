@@ -6,14 +6,20 @@ public class EnemyPathFinder : MonoBehaviour
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _reachThreshold = 0.1f;
 
+    private EnemyMover _mover;
     private Vector2 _targetPosition;
     private int _currentWaypointIndex = 0;
 
     public Action<Vector2> WaypointReached;
 
+    private void Awake()
+    {
+        _mover = GetComponent<EnemyMover>();
+    }
+
     private void Start()
     {
-        WaypointReached?.Invoke(SetNextWaypointDirection());
+        _mover.SetNextWaypoint(SetNextWaypointDirection());
     }
 
     private void FixedUpdate()
@@ -45,7 +51,7 @@ public class EnemyPathFinder : MonoBehaviour
         if (IsCloseEnough(transform.position, _targetPosition, _reachThreshold))
         {
             _currentWaypointIndex = ++_currentWaypointIndex % _waypoints.Length;
-            WaypointReached?.Invoke(SetNextWaypointDirection());
+            _mover.SetNextWaypoint(SetNextWaypointDirection());
         }
     }
 

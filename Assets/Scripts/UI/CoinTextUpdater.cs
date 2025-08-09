@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class CoinTextUpdater : MonoBehaviour
 {
-    [SerializeField] private CoinCollector _collector;
+    [SerializeField] private Wallet _wallet;
 
     private TextMeshProUGUI _text;
 
@@ -15,12 +15,12 @@ public class CoinTextUpdater : MonoBehaviour
 
     private void OnEnable()
     {
-        _collector.CoinsCountChanged += ChangeCoinsText;
+        _wallet.CoinsCountChanged += ChangeCoinsText;
     }
 
     private void OnDisable()
     {
-        _collector.CoinsCountChanged -= ChangeCoinsText;
+        _wallet.CoinsCountChanged -= ChangeCoinsText;
     }
 
     private void ChangeCoinsText(int coinsCount)
