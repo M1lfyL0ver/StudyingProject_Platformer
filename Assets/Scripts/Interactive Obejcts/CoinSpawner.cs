@@ -37,7 +37,7 @@ public class CoinSpawner : MonoBehaviour
         {
             Coin coin = Instantiate(_coinPrefab, transform.position, transform.rotation);
             coin.gameObject.SetActive(false);
-            coin.OnCollectorCollided += ReturnCoinToPool;
+            coin.OnCollectorCollided += TryReturnCoinToPool;
             _coinPool.Enqueue(coin);
         }
     }
@@ -64,7 +64,7 @@ public class CoinSpawner : MonoBehaviour
         else
         {
             coin = Instantiate(_coinPrefab, transform.position, transform.rotation);
-            coin.OnCollectorCollided += ReturnCoinToPool;
+            coin.OnCollectorCollided += TryReturnCoinToPool;
         }
 
         coin.transform.position = transform.position;
@@ -76,8 +76,11 @@ public class CoinSpawner : MonoBehaviour
         rigidbody.AddForce(direction, ForceMode2D.Impulse);
     }
 
-    private void ReturnCoinToPool(Coin coin)
+    private void TryReturnCoinToPool(Coin coin, Collision2D collision)
     {
-        coin.gameObject.SetActive(false);
+        if (collision.gameObject.TryGetComponent<CoinCollector>(out _))
+        {
+            coin.gameObject.SetActive(false);
+        }
     }
 }
