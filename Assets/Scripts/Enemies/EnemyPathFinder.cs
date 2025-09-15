@@ -10,8 +10,6 @@ public class EnemyPathFinder : MonoBehaviour
     private Vector2 _targetPosition;
     private int _currentWaypointIndex = 0;
 
-    public Action<Vector2> WaypointReached;
-
     private void Awake()
     {
         _mover = GetComponent<EnemyMover>();

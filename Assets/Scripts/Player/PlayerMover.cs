@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D), typeof(Fliper))]
 public class PlayerMover : MonoBehaviour
 {
     [SerializeField] private float _jumpForce = 10f;
@@ -16,7 +16,7 @@ public class PlayerMover : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _fliper = gameObject.AddComponent<Fliper>();
+        _fliper = GetComponent<Fliper>();
     }
 
     private void FixedUpdate()

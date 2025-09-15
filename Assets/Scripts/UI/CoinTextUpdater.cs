@@ -25,6 +25,6 @@ public class CoinTextUpdater : MonoBehaviour
 
     private void ChangeCoinsText(int coinsCount)
     {
-        _text.text = $"Монетки : {coinsCount.ToString()}";
+        _text.text = $"Монетки : {coinsCount}";
     }
 }

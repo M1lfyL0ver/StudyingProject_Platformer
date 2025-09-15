@@ -22,16 +22,20 @@ public class EnemyMover : MonoBehaviour
 
     public void SetNextWaypoint(Vector2 waypointDirection)
     {
-        if(waypointDirection != null)
+        if (waypointDirection != null)
         {
             _nextWaypoint = waypointDirection;
         }
     }
 
+    public void SetChaseDirection(Vector2 chaseDirection)
+    {
+        _nextWaypoint = chaseDirection;
+    }
+
     private void Move(Vector2 nextWaypointDirection)
     {
         _rigidbody.linearVelocity = new Vector2(nextWaypointDirection.x * _moveSpeed, 0);
-
         _fliper.Flip(nextWaypointDirection);
     }
 }
