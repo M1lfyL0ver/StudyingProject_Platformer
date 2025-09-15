@@ -4,10 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Coin : MonoBehaviour
 {
-    public Action<Coin, Collision2D> OnCollectorCollided;
+    public Action<Coin> OnCollectorCollided;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void Collect()
     {
-        OnCollectorCollided?.Invoke(this, collision);
+        OnCollectorCollided?.Invoke(this);
     }
 }

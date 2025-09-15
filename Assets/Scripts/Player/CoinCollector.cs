@@ -8,9 +8,10 @@ public class CoinCollector : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Coin>(out _))
+        if (collision.gameObject.TryGetComponent<Coin>(out Coin coin))
         {
             CoinPickedUp?.Invoke();
+            coin.Collect();
         }
     }
 }

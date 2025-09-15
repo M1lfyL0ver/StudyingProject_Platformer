@@ -76,11 +76,8 @@ public class CoinSpawner : MonoBehaviour
         rigidbody.AddForce(direction, ForceMode2D.Impulse);
     }
 
-    private void TryReturnCoinToPool(Coin coin, Collision2D collision)
+    private void TryReturnCoinToPool(Coin coin)
     {
-        if (collision.gameObject.TryGetComponent<CoinCollector>(out _))
-        {
-            coin.gameObject.SetActive(false);
-        }
+        coin.gameObject.SetActive(false);
     }
 }
