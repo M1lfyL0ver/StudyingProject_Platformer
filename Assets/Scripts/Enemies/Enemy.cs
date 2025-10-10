@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyMover), typeof(EnemyPathFinder), typeof(EnemyAgressionChaser))]
-[RequireComponent(typeof(Health), typeof(DamageDealer), typeof(HitShower))]
+[RequireComponent(typeof(Health), typeof(DamageDealer))]
 public class Enemy : MonoBehaviour
 {
     private EnemyMover _mover;

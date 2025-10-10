@@ -7,7 +7,7 @@ public class HealPotion : MonoBehaviour
 
     public int Heal { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         Heal = _heal;
     }

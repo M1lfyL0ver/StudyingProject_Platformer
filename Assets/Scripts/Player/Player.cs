@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover), typeof(PlayerInputHandler), typeof(GroundDetector))]
 [RequireComponent(typeof(PlayerAnimationSwitcher), typeof(CoinCollector), typeof(Health))]
-[RequireComponent(typeof(DamageDealer), typeof(HitShower), typeof(HealCollector))]
+[RequireComponent(typeof(DamageDealer), typeof(HealCollector))]
 public class Player : MonoBehaviour
 {
     private PlayerMover _playerMover;
@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     private GroundDetector _groundDetector;
     private PlayerAnimationSwitcher _playerAnimationSwitcher;
     private Health _health;
-    private HitShower _hitShower;
     private HealCollector _healCollector;
 
     private void Awake()
@@ -20,7 +19,6 @@ public class Player : MonoBehaviour
         _groundDetector = GetComponent<GroundDetector>();
         _playerAnimationSwitcher = GetComponent<PlayerAnimationSwitcher>();
         _health = GetComponent<Health>();
-        _hitShower = GetComponent<HitShower>();
         _healCollector = GetComponent<HealCollector>();
     }
 
@@ -28,7 +26,6 @@ public class Player : MonoBehaviour
     {
         _playerInputHandler.LeftRightPressed += ChangeMovementSpeed;
         _playerInputHandler.UpDownPressed += Jump;
-        _health.DamageDealed += HandleHit;
         _healCollector.HealPickedUp += HandleHeal;
     }
 
@@ -36,7 +33,6 @@ public class Player : MonoBehaviour
     {
         _playerInputHandler.LeftRightPressed -= ChangeMovementSpeed;
         _playerInputHandler.UpDownPressed -= Jump;
-        _health.DamageDealed -= HandleHit;
         _healCollector.HealPickedUp -= HandleHeal;
     }
 
@@ -49,11 +45,6 @@ public class Player : MonoBehaviour
     {
         _playerAnimationSwitcher.SetRunAnimation(direction);
         _playerMover.ChangeMovementSpeed(direction);
-    }
-
-    private void HandleHit()
-    {
-        StartCoroutine(_hitShower.Flash());
     }
 
     private void HandleHeal(int heal)

@@ -2,19 +2,27 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Death))]
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IHealth
 {
     [SerializeField] private int _maxHitpoints = 100;
     [SerializeField] private int _minHitpoints = 0;
 
     private int _hitpoints;
 
-    public Action DamageDealed;
-    public Action PlayerIsDead;
+    public event Action PlayerIsDead;
+
+    public event Action<float, float> HealthChanged;
+
+    public float CurrentHealth => _hitpoints;
+
+    public float MaxHealth => _maxHitpoints;
+
+    public float MinHealth => _minHitpoints;
 
     private void OnEnable()
     {
         _hitpoints = _maxHitpoints;
+        HealthChanged?.Invoke(_hitpoints, _maxHitpoints);
     }
 
     public void TakeDamage(int damage)
@@ -22,7 +30,7 @@ public class Health : MonoBehaviour
         if (damage > 0)
         {
             _hitpoints = Mathf.Max(_minHitpoints, _hitpoints - damage);
-            DamageDealed?.Invoke();
+            HealthChanged?.Invoke(_hitpoints, _maxHitpoints);
             HandleDeath();
         }
     }
