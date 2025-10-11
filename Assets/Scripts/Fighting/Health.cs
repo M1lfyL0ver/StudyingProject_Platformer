@@ -40,6 +40,7 @@ public class Health : MonoBehaviour, IHealth
         if (heal > 0)
         {
             _hitpoints = Mathf.Min(_maxHitpoints, _hitpoints + heal);
+            HealthChanged?.Invoke(_hitpoints, _maxHitpoints);
         }
     }
 

@@ -1,40 +1,26 @@
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(HealthBar))]
 public class NumberHealthBar : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private MonoBehaviour _healthComponent;
-    
-    private IHealth _health;
+
+    private HealthBar _healthBar;
 
     private void Awake()
     {
-        if(_healthComponent is IHealth)
-        {
-            _health = _healthComponent.GetComponent<IHealth>();
-            Initialize();
-        }
-        else
-        {
-            _health = null;
-            Debug.Log($"{_healthComponent.GetType().Name} does not implement IHealth");
-        }
+        _healthBar = GetComponent<HealthBar>();
     }
 
     private void OnEnable()
     {
-        _health.HealthChanged += UpdateText;
+        _healthBar.UpdateBar += UpdateText;
     }
 
     private void OnDisable()
     {
-        _health.HealthChanged -= UpdateText;
-    }
-
-    private void Initialize()
-    {
-        UpdateText(_health.CurrentHealth, _health.MaxHealth);
+        _healthBar.UpdateBar -= UpdateText;
     }
 
     private void UpdateText(float currentHealth, float maxHealth)

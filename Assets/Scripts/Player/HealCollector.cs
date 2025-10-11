@@ -11,7 +11,7 @@ public class HealCollector : MonoBehaviour
         if (collision.gameObject.TryGetComponent<HealPotion>(out HealPotion potion))
         {
             HealPickedUp?.Invoke(potion.Heal);
-            Destroy(collision.gameObject);
+            Destroy(potion.gameObject);
         }
     }
 }
