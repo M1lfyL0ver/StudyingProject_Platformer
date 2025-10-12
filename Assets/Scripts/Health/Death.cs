@@ -11,15 +11,15 @@ public class Death : MonoBehaviour
 
     private void OnEnable()
     {
-        _health.PlayerIsDead += SetPlayerDisabled;
+        _health.IsDead += SetGameObjectDisabled;
     }
 
     private void OnDisable()
     {
-        _health.PlayerIsDead -= SetPlayerDisabled;
+        _health.IsDead -= SetGameObjectDisabled;
     }
 
-    private void SetPlayerDisabled()
+    private void SetGameObjectDisabled()
     {
         _health.gameObject.SetActive(false);
     }

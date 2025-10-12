@@ -1,41 +1,31 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
-[RequireComponent(typeof(HealthBar))]
-public class SmoothSliderBar : MonoBehaviour
+public class SmoothSliderBar : HealthBar
 {
     [SerializeField] private Slider _slider;
     [SerializeField] private float _smoothSpeed = 2f;
 
-    private HealthBar _healthBar;
     private float _targetValue;
-    private bool _isAnimating;
+    private Coroutine _currentAnimation;
 
-    private void Awake()
-    {
-        _healthBar = GetComponent<HealthBar>();
-    }
-
-    private void OnEnable()
-    {
-        _healthBar.UpdateBar += UpdateBar;
-    }
-
-    private void OnDisable()
-    {
-        _healthBar.UpdateBar -= UpdateBar;
-    }
-
-    private void UpdateBar(float currentHealth, float maxHealth)
+    public override void HandleUpdateBar(float currentHealth, float maxHealth)
     {
         _slider.maxValue = maxHealth;
         _targetValue = currentHealth;
-        _isAnimating = true;
+
+        if (_currentAnimation != null)
+        {
+            StopCoroutine(_currentAnimation);
+        }
+
+        _currentAnimation = StartCoroutine(AnimateSlider());
     }
 
-    private void Update()
+    private IEnumerator AnimateSlider()
     {
-        if (_isAnimating)
+        while (Mathf.Approximately(_slider.value, _targetValue) == false)
         {
             _slider.value = Mathf.MoveTowards(
                 _slider.value,
@@ -43,10 +33,18 @@ public class SmoothSliderBar : MonoBehaviour
                 _smoothSpeed * Time.deltaTime * _slider.maxValue
             );
 
-            if (Mathf.Approximately(_slider.value, _targetValue))
-            {
-                _isAnimating = false;
-            }
+            yield return null;
+        }
+
+        _currentAnimation = null;
+    }
+
+    private void OnDisable()
+    {
+        if (_currentAnimation != null)
+        {
+            StopCoroutine(_currentAnimation);
+            _currentAnimation = null;
         }
     }
 }
