@@ -7,13 +7,11 @@ public class Health : MonoBehaviour
     [SerializeField] private int _maxHitpoints = 100;
     [SerializeField] private int _minHitpoints = 0;
 
-    private int _hitpoints;
-
-    public event Action IsDead;
+    public event Action Dead;
 
     public event Action<float, float> HitpointsChanged;
 
-    public float CurrentHitpoints => _hitpoints;
+    public float CurrentHitpoints { get; private set; }
 
     public float MaxHitpoints => _maxHitpoints;
 
@@ -21,16 +19,16 @@ public class Health : MonoBehaviour
 
     private void OnEnable()
     {
-        _hitpoints = _maxHitpoints;
-        HitpointsChanged?.Invoke(_hitpoints, _maxHitpoints);
+        CurrentHitpoints = _maxHitpoints;
+        HitpointsChanged?.Invoke(CurrentHitpoints, _maxHitpoints);
     }
 
     public void TakeDamage(int damage)
     {
         if (damage > 0)
         {
-            _hitpoints = Mathf.Max(_minHitpoints, _hitpoints - damage);
-            HitpointsChanged?.Invoke(_hitpoints, _maxHitpoints);
+            CurrentHitpoints = Mathf.Max(_minHitpoints, CurrentHitpoints - damage);
+            HitpointsChanged?.Invoke(CurrentHitpoints, _maxHitpoints);
             HandleDeath();
         }
     }
@@ -39,16 +37,16 @@ public class Health : MonoBehaviour
     {
         if (heal > 0)
         {
-            _hitpoints = Mathf.Min(_maxHitpoints, _hitpoints + heal);
-            HitpointsChanged?.Invoke(_hitpoints, _maxHitpoints);
+            CurrentHitpoints = Mathf.Min(_maxHitpoints, CurrentHitpoints + heal);
+            HitpointsChanged?.Invoke(CurrentHitpoints, _maxHitpoints);
         }
     }
 
     private void HandleDeath()
     {
-        if (_hitpoints == _minHitpoints)
+        if (CurrentHitpoints == _minHitpoints)
         {
-            IsDead?.Invoke();
+            Dead?.Invoke();
         }
     }
 }
