@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerMover), typeof(PlayerInputHandler), typeof(GroundDetector))]
 [RequireComponent(typeof(PlayerAnimationSwitcher), typeof(CoinCollector), typeof(Health))]
-[RequireComponent(typeof(DamageDealer), typeof(HealCollector))]
+[RequireComponent(typeof(DamageDealer), typeof(HealCollector), typeof(VampiricAura))]
 public class Player : MonoBehaviour
 {
     private PlayerMover _playerMover;
@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private PlayerAnimationSwitcher _playerAnimationSwitcher;
     private Health _health;
     private HealCollector _healCollector;
+    private VampiricAura _vampiricAura;
 
     private void Awake()
     {
@@ -20,12 +21,14 @@ public class Player : MonoBehaviour
         _playerAnimationSwitcher = GetComponent<PlayerAnimationSwitcher>();
         _health = GetComponent<Health>();
         _healCollector = GetComponent<HealCollector>();
+        _vampiricAura = GetComponent<VampiricAura>();
     }
 
     private void OnEnable()
     {
         _playerInputHandler.LeftRightPressed += ChangeMovementSpeed;
         _playerInputHandler.UpDownPressed += Jump;
+        _playerInputHandler.SpellPressed += HandleAura;
         _healCollector.HealPickedUp += HandleHeal;
     }
 
@@ -33,6 +36,7 @@ public class Player : MonoBehaviour
     {
         _playerInputHandler.LeftRightPressed -= ChangeMovementSpeed;
         _playerInputHandler.UpDownPressed -= Jump;
+        _playerInputHandler.SpellPressed -= HandleAura;
         _healCollector.HealPickedUp -= HandleHeal;
     }
 
@@ -50,5 +54,10 @@ public class Player : MonoBehaviour
     private void HandleHeal(int heal)
     {
         _health.HealHitpoints(heal);
+    }
+
+    private void HandleAura()
+    {
+        _vampiricAura.TrySetActive();
     }
 }
