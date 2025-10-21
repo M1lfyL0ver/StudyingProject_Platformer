@@ -15,10 +15,13 @@ public class VampiricAura : MonoBehaviour
 
     private bool _isActive = false;
     private bool _isOnCooldown = false;
+    private float _currentTimer = 0f;
+    private float _maxTimer = 0f;
 
     public event Action<float> AuraDurationChanged;
     public event Action<float> AuraCooldownChanged;
     public event Action<bool, float> AuraStatusSwitched;
+    public event Action<float, float> TimerChanged;
 
     private void Awake()
     {
@@ -31,9 +34,12 @@ public class VampiricAura : MonoBehaviour
         if (_isActive == false && _isOnCooldown == false)
         {
             _isActive = true;
+            _currentTimer = _duration;
+            _maxTimer = _duration;
             AuraStatusSwitched?.Invoke(true, _radius);
             StartCoroutine(VampiricCoroutine());
             AuraDurationChanged?.Invoke(_duration);
+            TimerChanged?.Invoke(_currentTimer, _maxTimer);
         }
     }
 
@@ -45,6 +51,8 @@ public class VampiricAura : MonoBehaviour
         while (timer < _duration)
         {
             timer += _period;
+            _currentTimer = _duration - timer;
+            TimerChanged?.Invoke(_currentTimer, _maxTimer);
             ApplyVampirism();
             yield return period;
         }
@@ -58,9 +66,23 @@ public class VampiricAura : MonoBehaviour
     private IEnumerator CooldownCoroutine()
     {
         _isOnCooldown = true;
+        _currentTimer = _cooldown;
+        _maxTimer = _cooldown;
+        TimerChanged?.Invoke(_currentTimer, _maxTimer);
 
-        yield return new WaitForSeconds(_cooldown);
+        float timer = 0f;
+        WaitForSeconds period = new WaitForSeconds(0.1f);
 
+        while (timer < _cooldown)
+        {
+            timer += 0.1f;
+            _currentTimer = _cooldown - timer;
+            TimerChanged?.Invoke(_currentTimer, _maxTimer);
+            yield return period;
+        }
+
+        _currentTimer = 0f;
+        TimerChanged?.Invoke(_currentTimer, _maxTimer);
         _isOnCooldown = false;
     }
 
@@ -73,8 +95,8 @@ public class VampiricAura : MonoBehaviour
 
         if (nearestEnemy != null)
         {
-            nearestEnemy.TakeDamage(_damage);
-            _player.HealHitpoints(_damage);
+            _player.HealHitpoints(Mathf.Min(_damage, nearestEnemy.CurrentHitpoints));
+            nearestEnemy.TakeDamage(Mathf.Min(_damage, nearestEnemy.CurrentHitpoints));
         }
     }
 
@@ -89,17 +111,15 @@ public class VampiricAura : MonoBehaviour
         {
             if (collider.gameObject.TryGetComponent<Enemy>(out _) && collider.gameObject.TryGetComponent<Health>(out enemyHealth))
             {
-                if (enemyHealth != null)
-                {
-                    Vector2 directionToEnemy = collider.transform.position - transform.position;
-                    float sqrDistance = directionToEnemy.sqrMagnitude;
+                Vector2 directionToEnemy = collider.transform.position - transform.position;
+                float sqrDistance = directionToEnemy.sqrMagnitude;
 
-                    if (sqrDistance <= radiusSquared && sqrDistance < closestSqrDistance)
-                    {
-                        closestSqrDistance = sqrDistance;
-                        nearestEnemy = enemyHealth;
-                    }
+                if (sqrDistance <= radiusSquared && sqrDistance < closestSqrDistance)
+                {
+                    closestSqrDistance = sqrDistance;
+                    nearestEnemy = enemyHealth;
                 }
+
             }
         }
 

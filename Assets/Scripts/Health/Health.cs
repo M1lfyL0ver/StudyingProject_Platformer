@@ -11,11 +11,11 @@ public class Health : MonoBehaviour
 
     public event Action<float, float> HitpointsChanged;
 
-    public float CurrentHitpoints { get; private set; }
+    public int CurrentHitpoints { get; private set; }
 
-    public float MaxHitpoints => _maxHitpoints;
+    public int MaxHitpoints => _maxHitpoints;
 
-    public float MinHitpoints => _minHitpoints;
+    public int MinHitpoints => _minHitpoints;
 
     private void OnEnable()
     {
