@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    void LateUpdate()
+    private void LateUpdate()
     {
         transform.rotation = Quaternion.identity;
     }

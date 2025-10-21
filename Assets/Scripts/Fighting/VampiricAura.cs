@@ -12,19 +12,18 @@ public class VampiricAura : MonoBehaviour
     [SerializeField] private float _period = 0.5f;
 
     private Health _player;
-    private VampiricAuraVisualizer _visualizer;
 
     private bool _isActive = false;
     private bool _isOnCooldown = false;
 
     public event Action<float> AuraDurationChanged;
     public event Action<float> AuraCooldownChanged;
+    public event Action<bool, float> AuraStatusSwitched;
 
     private void Awake()
     {
         _player = GetComponent<Health>();
-        _visualizer = GetComponent<VampiricAuraVisualizer>();
-        _visualizer.SetInactive();
+        AuraStatusSwitched?.Invoke(false, _radius);
     }
 
     public void TrySetActive()
@@ -32,7 +31,7 @@ public class VampiricAura : MonoBehaviour
         if (_isActive == false && _isOnCooldown == false)
         {
             _isActive = true;
-            _visualizer.SetActive(_radius);
+            AuraStatusSwitched?.Invoke(true, _radius);
             StartCoroutine(VampiricCoroutine());
             AuraDurationChanged?.Invoke(_duration);
         }
@@ -50,7 +49,7 @@ public class VampiricAura : MonoBehaviour
             yield return period;
         }
 
-        _visualizer.SetInactive();
+        AuraStatusSwitched?.Invoke(false, _radius);
         _isActive = false;
         StartCoroutine(CooldownCoroutine());
         AuraCooldownChanged?.Invoke(_cooldown);
@@ -69,19 +68,44 @@ public class VampiricAura : MonoBehaviour
     {
         Vector2 position = new Vector2(transform.position.x, transform.position.y);
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(position, _radius);
-        Health enemy = null;
 
-        foreach (var collider in hitColliders)
+        Health nearestEnemy = FindNearestEnemy(hitColliders);
+
+        if (nearestEnemy != null)
         {
-            if (collider.gameObject.TryGetComponent<Enemy>(out _))
-            {
-                enemy = collider.GetComponent<Health>();
-                enemy.TakeDamage(_damage);
-                _player.HealHitpoints(_damage);
-            }
+            nearestEnemy.TakeDamage(_damage);
+            _player.HealHitpoints(_damage);
         }
     }
-    
+
+    private Health FindNearestEnemy(Collider2D[] colliders)
+    {
+        Health nearestEnemy = null;
+        Health enemyHealth = null;
+        float closestSqrDistance = float.MaxValue;
+        float radiusSquared = _radius * _radius;
+
+        foreach (var collider in colliders)
+        {
+            if (collider.gameObject.TryGetComponent<Enemy>(out _) && collider.gameObject.TryGetComponent<Health>(out enemyHealth))
+            {
+                if (enemyHealth != null)
+                {
+                    Vector2 directionToEnemy = collider.transform.position - transform.position;
+                    float sqrDistance = directionToEnemy.sqrMagnitude;
+
+                    if (sqrDistance <= radiusSquared && sqrDistance < closestSqrDistance)
+                    {
+                        closestSqrDistance = sqrDistance;
+                        nearestEnemy = enemyHealth;
+                    }
+                }
+            }
+        }
+
+        return nearestEnemy;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

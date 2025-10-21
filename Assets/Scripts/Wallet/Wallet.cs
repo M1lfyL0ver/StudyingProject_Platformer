@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Wallet : MonoBehaviour
 {
-    [SerializeField] CoinCollector _player;
+    [SerializeField] private CoinCollector _player;
 
     private int _coinsCount;
 
